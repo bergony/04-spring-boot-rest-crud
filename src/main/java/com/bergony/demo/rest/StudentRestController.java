@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class StudentRestController {
-    private List<Student> theStudents = new ArrayList<>();
+    private final List<Student> theStudents = new ArrayList<>();
 
     @PostConstruct
     public void loadData() {
@@ -25,8 +25,14 @@ public class StudentRestController {
     public List<Student> getStudents() {
         return theStudents;
     }
-    @GetMapping("/student/{studendtId}")
+    @GetMapping("/students/{studendtId}")
     public Student getStudents(@PathVariable("studendtId") int studendtId) {
+
+        if(studendtId >= theStudents.size() || studendtId < 0)
+            throw new StudentNotFoundException("Student id not found - "+ studendtId);
+
         return theStudents.get(studendtId);
     }
+
+
 }
